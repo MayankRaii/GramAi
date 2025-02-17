@@ -1,2 +1,3 @@
 # GramAi
-English language learning web app
+English language learning web app.
+
