@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translator</title>
+    <link rel="stylesheet" href="../Static/css/GramAi.css">
+</head>
+
+<body>
+    <nav>
+        <div class="container main-nav flex">
+            <a href="#" class="company-logo">
+                <img src="../Static/Images/Logo.png" alt="company logo">
+            </a>
+            <div class="nav-links" id="nav-links">
+                <ul class="flex">
+                    <li><a href="../Templates/GramAi.html" class="hover-link">Home</a></li>
+                    <li><a href="#" class="hover-link">Features</a></li>
+                    <li><a href="#" class="hover-link"> About us</a></li>
+                    <li><a href="#" class="hover-link">Contact us</a></li>
+                    <li><a href="../Templates/signin.html" class="hover-link secondary-button">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <div class="container">
+            <h1>Translator</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="grammar-checker">
+            <textarea id="inputText" placeholder="Enter your text here"></textarea>
+            <button id="translateButton" class="hover-link secondary-button2">Translate to English</button>
+            <textarea id="outputText" placeholder="Translated text will appear here"></textarea>
+        </div>
+    </div>
+
+    <script src="../Static/javascript/translation.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similarity Checker</title>
+    <link rel="stylesheet" href="../Static/css/GramAi.css">
+</head>
+<body>
+
+    <!-- nav bar -->
+    <nav>
+        <div class="container main-nav flex">
+            <a href="#" class="company-logo">
+                <img src="../Static/Images/Logo.png" alt="company logo">
+            </a>
+            <div class="nav-links" id="nav-links">
+                <ul class="flex">
+                    <li><a href="../Templates/GramAi.html" class="hover-link">Home</a></li>
+                    <li><a href="#" class="hover-link">Features</a></li>
+                    <li><a href="#" class="hover-link"> About us</a></li>
+                    <li><a href="#" class="hover-link">Contact us</a></li>
+                    <li><a href="../Templates/signin.html" class="hover-link secondary-button">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- main content -->
+    <div class="container">
+        <h2>Similarity Checker</h2>
+        <br>
+        <h3>GramAi’s Similarity checker detects plagiarism/similarity in the given text files and returns a detail report.</h3>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="files[]" id="files" multiple>
+            <input type="button" value="Get report" class="secondary-button2" onclick="uploadFiles()">
+        </form>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function uploadFiles() {
+            var files = document.getElementById('files').files;
+            var formData = new FormData();
+
+            var fileContents = [];  // Array to store file contents
+            var fileNames = [];     // Array to store file names
+
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files[]', files[i]);
+                fileNames.push(files[i].name);  // Add file name to array
+            }
+
+            // Process files
+            var output = document.getElementById('output');
+            output.innerHTML = '';
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    fileContents.push(content);  // Add file content to array
+
+                    if (fileContents.length === files.length) {
+                        // All files processed, send data to backend
+                        fetch('http://127.0.0.1:8000/similar_text_class', {
+                            method: 'POST',
+                            body: JSON.stringify({ fileContents: fileContents, fileNames: fileNames }),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Display similarity report
+                            const reportDiv = document.createElement('div');
+                            reportDiv.textContent = `
+                                Text1: ${data.most_similar_text_one}
+                                Name1 :${data.most_similar_name_one}
+                                Text2: ${data.most_similar_text_two}
+                                Name1 :${data.most_similar_name_two}
+                                Overall similarity: ${data.overall_similarity}
+                            `;
+                            output.appendChild(reportDiv);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('There was an error processing your request. Please try again later.');
+                        });
+                    }
+                };
+
+                reader.readAsText(file);
+            }
+        }
+    </script>
+
+</body>
+</html>
